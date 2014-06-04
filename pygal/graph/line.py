@@ -67,7 +67,7 @@ class Line(Graph):
             points = serie.points
         view_values = list(map(self.view, points))
         if serie.show_dots:
-            count = 0
+            count = -1
             for i, (x, y) in enumerate(view_values):
                 count += 1
                 if None in (x, y):
@@ -90,6 +90,11 @@ class Line(Graph):
                     metadata)
                 if count in serie.metadata:
                     self.svg.node(serie_node['overlay'], 'image', x=x, y=y, width = 50, height = 50, href = serie.metadata[count]['href'])
+                    self._tooltip_data(serie_node['overlay'], serie.metadata[count]['username'], x+10, y+52)
+                    self._static_value(
+                        serie_node, serie.metadata[count]['username'],
+                        x + 10 + self.value_font_size,
+                        y + 52 +  self.value_font_size)
                 val = self._get_value(serie.points, i)
                 self.svg.node(dots, 'circle', cx=x, cy=y, r=serie.dots_size,
                               class_='dot reactive tooltip-trigger')
